@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <h1>Find Your Next Book</h1>
+  <form id="recommendationForm">
+    <label>Genres:</label><br>
+    <input type="checkbox" name="genre" value="fantasy">Fantasy
+    <input type="checkbox" name="genre" value="sci-fi">Sci-fi
+    <input type="checkbox" name="genre" value="romance">Romance
+    <input type="checkbox" name="genre" value="dystopian">Dystopian
+    <input type="checkbox" name="genre" value="mystery">Mystery
+    <input type="checkbox" name="genre" value="young-adult">Young Adult (YA)<br>
+    <input type="checkbox" name="genre" value="non-fiction">Non-fiction<br><br>
+
+    <label>Mood:</label><br>
+    <select name="mood">
+      <option value="dark">Dark</option>
+      <option value="uplifting">Uplifting</option>
+      <option value="melancholic">Melancholic</option>
+      <option value="heartwarming">Heartwarming</option>
+      <option value="introspective">Introspective</option>
+      <option value="whimsical">Whimsical</option>
+      <option value="nostalgic">Nostalgic</option>
+    </select><br><br>
+
+    <label>Books you liked:</label><br>
+    <input type="text" name="liked_books" placeholder="e.g. The Cruel Prince by Holly Black"><br><br>
+
+    <button type="submit">Get Recommendations</button>
+  </form>
+
+  <!-- Loading Spinner -->
+  <div id="loading" style="display:none;">
+    <p>Loading recommendations...</p>
+  </div>
+
+  <div id="results"></div>
+
+  <script>
+    document.getElementById("recommendationForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Show loading spinner and clear old results
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("results").innerHTML = "";
+
+      const formData = new FormData(e.target);
+      // Handle multiple genres correctly
+      const data = {};
+      formData.forEach((value, key) => {
+        if (key === 'genre') {
+          if (!data.genre) data.genre = [];
+          data.genre.push(value);
+        } else {
+          data[key] = value;
+        }
+      });
+
+      try {
+        const res = await fetch("http://127.0.0.1:5000/recommend", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const results = await res.json();
+
+        // Hide loading spinner
+        document.getElementById("loading").style.display = "none";
+
+        if (results.length === 0) {
+          document.getElementById("results").innerHTML = "<p>No recommendations found.</p>";
+          return;
+        }
+
+        // Render results as book cards
+        document.getElementById("results").innerHTML = results.map(book => `
+          <div class="book-card">
+            <h3>${book.title}</h3>
+            <p>${book.reason}</p>
+          </div>
+        `).join("");
+
+      } catch (error) {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("results").innerHTML = "<p>Error loading recommendations.</p>";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

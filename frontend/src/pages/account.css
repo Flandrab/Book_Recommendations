@@ -1,0 +1,230 @@
+/* Account page, the account button in the top bar and the "couldn't save" banner. */
+
+.account-page {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    padding: clamp(32px, 6vw, 72px) 16px;
+  }
+  
+  .account-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: min(440px, 100%);
+    padding: clamp(24px, 4vw, 36px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  
+  .account-card h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+  }
+  
+  .account-card .muted {
+    margin: -6px 0 0;
+  }
+  
+  .mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--paper-deep);
+  }
+  
+  .mode-switch button {
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  
+  .mode-switch button[aria-selected="true"] {
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  .account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .account-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  
+  .account-form input[type="email"],
+  .account-form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+  }
+  
+  .account-form input[type="text"] {
+    font-weight: 400;
+    color: var(--ink);
+  }
+  
+  .account-form input[type="email"]:focus,
+  .account-form input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+  
+  .account-form .alert {
+    margin: 0;
+  }
+  
+  .guest-note {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--green-tint);
+    color: var(--green);
+  }
+  
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .account-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 6px 0;
+  }
+  
+  .account-stats div {
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--paper-deep);
+  }
+  
+  .account-stats dt {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  
+  .account-stats dd {
+    margin: 2px 0 0;
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  /* Top bar */
+  
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .account-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px 5px 5px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .account-button.signed-out {
+    padding: 8px 16px;
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  
+  .account-button:hover {
+    border-color: var(--accent);
+  }
+  
+  .account-button .mini-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  /* Background-save problems */
+  
+  .sync-banner {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: calc(100vw - 32px);
+    padding: 10px 12px 10px 16px;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: var(--shadow);
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+  }
+  
+  .sync-banner button {
+    padding: 4px 10px;
+    border: 0;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--paper) 18%, transparent);
+    color: var(--paper);
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 520px) {
+    .account-button .account-name {
+      display: none;
+    }
+  
+    .account-button {
+      padding: 5px;
+    }
+  }

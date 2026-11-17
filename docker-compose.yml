@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:3b}
+      CONTACT_EMAIL: ${CONTACT_EMAIL:-you@example.com}
+      LLM_ENABLED: ${LLM_ENABLED:-true}
+    volumes:
+      - index-data:/data # embedding index + cover cache survive restarts
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-models:/root/.ollama
+    restart: unless-stopped
+
+  # One-off helper: downloads the LLM into the ollama volume, then exits.
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_HOST: ollama:11434
+    entrypoint: ["/bin/sh", "-c", "sleep 5 && ollama pull ${OLLAMA_MODEL:-llama3.2:3b}"]
+    restart: "no"
+
+volumes:
+  index-data:
+  ollama-models:

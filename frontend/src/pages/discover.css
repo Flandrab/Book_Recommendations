@@ -1,0 +1,40 @@
+/* "Hmm...." placeholder shown while recommendations load. */
+
+.thinking-state {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .hmm {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  
+  .hmm-dots span {
+    display: inline-block;
+    animation: hmm-bounce 1.4s ease-in-out infinite;
+  }
+  
+  .hmm-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .hmm-dots span:nth-child(3) { animation-delay: 0.3s; }
+  .hmm-dots span:nth-child(4) { animation-delay: 0.45s; }
+  
+  @keyframes hmm-bounce {
+    0%, 60%, 100% {
+      opacity: 0.3;
+      transform: translateY(0);
+    }
+    30% {
+      opacity: 1;
+      transform: translateY(-6px);
+    }
+  }
+  
+  .thinking-state > .hint {
+    margin: 0 0 18px;
+  }
